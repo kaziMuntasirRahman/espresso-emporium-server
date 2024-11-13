@@ -103,13 +103,12 @@ async function run() {
     })
 
     // update user after login
-    app.patch('/users', async (req, res) => {
-      const user = req.body;
-      console.log(user);
-      const filter = { email: user.email };
+    app.put('/users', async (req, res) => {
+      const { uid, email, displayName, emailVerified, isAnonymous, providerId, createdAt, lastLoginAt, photoURL, password } = req.body;
+      const filter = { email: email };
       const options = { upsert: true };
       const updatedUser = {
-        $set: { lastLoginAt: user.lastLoginAt }
+        $set: { uid, email, displayName, emailVerified, isAnonymous, providerId, createdAt, lastLoginAt, photoURL, password }
       }
       const result = await users.updateOne(filter, updatedUser, options);
       res.send(result);
